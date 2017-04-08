@@ -1,4 +1,4 @@
-FROM alpine:3.4
+FROM alpine:3.5
 MAINTAINER Adam Dodman <adam.dodman@gmx.com>
 
 ENV UID=236 UNAME=nzbget GID=990 GNAME=media
@@ -11,6 +11,7 @@ RUN chmod +x /start.sh \
  && apk add --no-cache openssl unrar p7zip python \
  && wget -O nzbget.run `wget -qO- http://nzbget.net/info/nzbget-version-linux.json | sed -n "s/^.*testing-download.*: \"\(.*\)\".*/\1/p"` \
  && sh nzbget.run \
+ && ln -sfv /nzbget/nzbget /usr/bin/nzbget \
  && rm -rf /nzbget.run \
  && apk del --no-cache openssl
 
@@ -18,4 +19,5 @@ USER $UNAME
 
 VOLUME ["/config", "/media"]
 EXPOSE 6789
-CMD ["/start.sh"]
+ENTRYPOINT ["/start.sh"]
+CMD ["nzbget", "-c", "/config/nzbget.conf", "-s", "-o", "OutputMode=log"]

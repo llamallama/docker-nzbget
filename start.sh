@@ -1,8 +1,11 @@
-#! /bin/sh
+#!/bin/sh
+set -e
 
-if [ ! -f /config/nzbget/nzbget.conf ]; then
-	cp  /nzbget/nzbget.conf /config/nzbget/nzbget.conf
-	echo "Created Config File"
+conf_file="/config/nzbget.conf"
+
+if [ ! -f "$conf_file" ]; then
+	cp /nzbget/nzbget.conf $conf_file
+	echo "Created default config file at $conf_file"
 fi
 
-/nzbget/nzbget -c /config/nzbget/nzbget.conf -s -o OutputMode=log
+exec $@
