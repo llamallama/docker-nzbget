@@ -4,5 +4,5 @@ An Alpine Linux based Dockerfile to run the usenet downloader NzbGet. It expects
 This dockerfile uses a user with uid 236. Make sure this user has write access to the /config folder.
 ## Example run command
 ```
-docker run -d --restart=always --name NzbGet --volumes-from Data --volumes-from media -p 6789:6789 adamant/nzbget
+docker run -d --restart=always --name NzbGet --volumes-from Data --volumes-from media -p 6789:6789 llamallama/nzbget
 ```

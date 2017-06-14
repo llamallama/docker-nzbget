@@ -1,7 +1,7 @@
-FROM alpine:3.5
-MAINTAINER Adam Dodman <adam.dodman@gmx.com>
+FROM alpine:3.6
+MAINTAINER Chris Jones <chris@sysadminchris.com>
 
-ENV UID=904 UNAME=nzbget GID=900 GNAME=media
+ENV UID=10001 UNAME=nzbget GID=10000 GNAME=media
 
 ADD start.sh /start.sh
 
@@ -15,9 +15,11 @@ RUN chmod +x /start.sh \
  && rm -rf /nzbget.run \
  && apk del --no-cache openssl
 
-USER $UNAME
-
+RUN mkdir /config && chown nzbget:media /config
 VOLUME ["/config", "/media"]
 EXPOSE 6789
+
+USER $UNAME
+
 ENTRYPOINT ["/sbin/tini", "--", "/start.sh"]
 CMD ["nzbget", "-c", "/config/nzbget.conf", "-s", "-o", "OutputMode=log"]
